@@ -1,0 +1,16 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "human-short",
+  "description": "Short human communication mode for Claude Code.",
+  "owner": {
+    "name": "Azuolas Balbieris"
+  },
+  "plugins": [
+    {
+      "name": "human-short",
+      "description": "Answer first, stay practical, and keep ordinary replies short.",
+      "source": "./",
+      "category": "productivity"
+    }
+  ]
+}

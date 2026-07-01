@@ -1,0 +1,35 @@
+{
+  "name": "human-short",
+  "version": "0.1.0",
+  "description": "Always-on short human communication mode for Claude Code.",
+  "author": {
+    "name": "Azuolas Balbieris"
+  },
+  "skills": "./skills/",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/src/hooks/human-short-activate.js\"",
+            "timeout": 5,
+            "statusMessage": "Loading human-short mode..."
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/src/hooks/human-short-prompt.js\"",
+            "timeout": 5,
+            "statusMessage": "Applying human-short mode..."
+          }
+        ]
+      }
+    ]
+  }
+}

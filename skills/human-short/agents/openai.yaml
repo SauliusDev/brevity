@@ -1,0 +1,4 @@
+interface:
+  display_name: "Human Short"
+  short_description: "Short, practical human answers."
+  default_prompt: "Use $human-short to answer first, stay practical, and keep ordinary replies to at most 3 sentences."

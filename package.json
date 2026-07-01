@@ -1,0 +1,19 @@
+{
+  "name": "human-short",
+  "version": "0.1.0",
+  "description": "Always-on short human communication mode for Claude Code and Codex.",
+  "type": "commonjs",
+  "private": true,
+  "bin": {
+    "human-short": "./bin/human-short.js"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "install:global": "node bin/human-short.js install",
+    "uninstall:global": "node bin/human-short.js uninstall"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT"
+}

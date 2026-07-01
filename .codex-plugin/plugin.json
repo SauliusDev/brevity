@@ -1,0 +1,25 @@
+{
+  "name": "human-short",
+  "version": "0.1.0",
+  "description": "Always-on short human communication mode for Claude Code and Codex.",
+  "author": {
+    "name": "Azuolas Balbieris"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Human Short",
+    "shortDescription": "Keep agent replies short, practical, and human.",
+    "longDescription": "Human Short adds a persistent per-prompt reminder that makes agents answer first, use plain language, and stay within a tight sentence budget unless more detail is requested.",
+    "developerName": "Azuolas Balbieris",
+    "category": "Productivity",
+    "capabilities": [
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Use human-short mode.",
+      "Explain this in 1-3 sentences.",
+      "Keep replies practical and brief."
+    ],
+    "brandColor": "#2563EB"
+  }
+}
