@@ -22,7 +22,7 @@ function includes(name) {
 function printResult(action, host, result) {
   process.stdout.write(`${action} ${host}: ${result.changed ? "changed" : "already ok"} ${result.file}\n`);
   if (host === "codex" && result.needsTrust) {
-    process.stdout.write("codex trust: pending. Open Codex once, run /hooks, and trust the human-short UserPromptSubmit hook.\n");
+    process.stdout.write("codex trust: pending. Open Codex once, run /hooks, and trust the Brevity UserPromptSubmit hook.\n");
   }
 }
 
@@ -43,24 +43,22 @@ if (command === "install") {
     : normalizeMode(requested) || defaultMode();
   if (mode === "off") {
     removeFlag(host);
-    process.stdout.write("Human Short mode disabled.\n");
+    process.stdout.write("Brevity mode disabled.\n");
   } else {
     writeFlag(host, mode);
-    process.stdout.write(`Human Short mode set to ${mode}.\n`);
+    process.stdout.write(`Brevity mode set to ${mode}.\n`);
   }
 } else {
   process.stdout.write(`Usage:
-  human-short install [all|claude|codex]
-  human-short uninstall [all|claude|codex]
-  human-short mode [claude|codex] [hard|lite|explain|coding|off]
-  human-short doctor
+  brevity install [all|claude|codex]
+  brevity uninstall [all|claude|codex]
+  brevity mode [claude|codex] [auto|hard|off]
+  brevity doctor
 
 Modes:
-  /human-short hard
-  /human-short lite
-  /human-short explain
-  /human-short coding
-  /human-short off
+  /brevity auto
+  /brevity hard
+  /brevity off
 
 Codex note:
   After install, open Codex once and run /hooks to trust the new hook.

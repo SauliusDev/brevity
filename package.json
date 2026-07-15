@@ -1,16 +1,16 @@
 {
-  "name": "human-short",
-  "version": "0.1.0",
-  "description": "Always-on short human communication mode for Claude Code and Codex.",
+  "name": "brevity",
+  "version": "0.2.0",
+  "description": "Adaptive concise-response preferences for Claude Code, Codex, and Hermes.",
   "type": "commonjs",
   "private": true,
   "bin": {
-    "human-short": "./bin/human-short.js"
+    "brevity": "./bin/brevity.js"
   },
   "scripts": {
     "test": "node --test tests/*.test.js",
-    "install:global": "node bin/human-short.js install",
-    "uninstall:global": "node bin/human-short.js uninstall"
+    "install:global": "node bin/brevity.js install",
+    "uninstall:global": "node bin/brevity.js uninstall"
   },
   "engines": {
     "node": ">=18"

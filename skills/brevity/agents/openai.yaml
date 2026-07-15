@@ -1,0 +1,4 @@
+interface:
+  display_name: "Brevity"
+  short_description: "Short by default, adaptive on request."
+  default_prompt: "Use $brevity auto to answer briefly by default and expand when I request more detail."

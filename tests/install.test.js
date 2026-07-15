@@ -11,7 +11,7 @@ function tempHome() {
 }
 
 function freshInstall(tempState) {
-  process.env.HUMAN_SHORT_STATE_DIR = tempState;
+  process.env.BREVITY_STATE_DIR = tempState;
   delete require.cache[require.resolve("../src/lib/install")];
   delete require.cache[require.resolve("../src/lib/config")];
   return require("../src/lib/install");
@@ -34,18 +34,18 @@ test("installs and uninstalls Claude hooks without removing existing hooks", () 
   assert.equal(installed.changed, true);
 
   const afterInstall = JSON.parse(fs.readFileSync(path.join(claudeDir, "settings.json"), "utf8"));
-  assert.match(JSON.stringify(afterInstall), /human-short-managed/);
+  assert.match(JSON.stringify(afterInstall), /brevity-managed/);
   assert.match(JSON.stringify(afterInstall), /existing/);
-  assert.match(fs.readFileSync(path.join(claudeDir, "commands", "human-short.md"), "utf8"), /human-short-managed/);
-  assert.match(fs.readFileSync(path.join(claudeDir, "commands", "human-short.md"), "utf8"), /mode claude/);
+  assert.match(fs.readFileSync(path.join(claudeDir, "commands", "brevity.md"), "utf8"), /brevity-managed/);
+  assert.match(fs.readFileSync(path.join(claudeDir, "commands", "brevity.md"), "utf8"), /mode claude/);
 
   const removed = install.uninstallClaude(claudeDir);
   assert.equal(removed.changed, true);
 
   const afterRemove = JSON.parse(fs.readFileSync(path.join(claudeDir, "settings.json"), "utf8"));
-  assert.doesNotMatch(JSON.stringify(afterRemove), /human-short-managed/);
+  assert.doesNotMatch(JSON.stringify(afterRemove), /brevity-managed/);
   assert.match(JSON.stringify(afterRemove), /existing/);
-  assert.equal(fs.existsSync(path.join(claudeDir, "commands", "human-short.md")), false);
+  assert.equal(fs.existsSync(path.join(claudeDir, "commands", "brevity.md")), false);
 });
 
 test("installs Codex prompt hook idempotently", () => {
@@ -62,7 +62,7 @@ test("installs Codex prompt hook idempotently", () => {
 
   const config = JSON.parse(fs.readFileSync(path.join(codexDir, "hooks.json"), "utf8"));
   const serialized = JSON.stringify(config);
-  assert.equal((serialized.match(/human-short-managed/g) || []).length, 1);
+  assert.equal((serialized.match(/brevity-managed/g) || []).length, 1);
 });
 
 test("doctor reports installed state and pending Codex trust", () => {

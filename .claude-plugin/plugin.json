@@ -1,7 +1,7 @@
 {
-  "name": "human-short",
-  "version": "0.1.0",
-  "description": "Always-on short human communication mode for Claude Code.",
+  "name": "brevity",
+  "version": "0.2.0",
+  "description": "Adaptive concise-response preferences for Claude Code.",
   "author": {
     "name": "Azuolas Balbieris"
   },
@@ -12,9 +12,9 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/src/hooks/human-short-activate.js\"",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/src/hooks/brevity-activate.js\"",
             "timeout": 5,
-            "statusMessage": "Loading human-short mode..."
+            "statusMessage": "Loading Brevity mode..."
           }
         ]
       }
@@ -24,9 +24,9 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/src/hooks/human-short-prompt.js\"",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/src/hooks/brevity-prompt.js\"",
             "timeout": 5,
-            "statusMessage": "Applying human-short mode..."
+            "statusMessage": "Applying Brevity mode..."
           }
         ]
       }

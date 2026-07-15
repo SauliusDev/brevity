@@ -1,24 +1,24 @@
 {
-  "name": "human-short",
-  "version": "0.1.0",
-  "description": "Always-on short human communication mode for Claude Code and Codex.",
+  "name": "brevity",
+  "version": "0.2.0",
+  "description": "Adaptive concise-response preferences for Claude Code, Codex, and Hermes.",
   "author": {
     "name": "Azuolas Balbieris"
   },
   "skills": "./skills/",
   "interface": {
-    "displayName": "Human Short",
-    "shortDescription": "Keep agent replies short, practical, and human.",
-    "longDescription": "Human Short adds a persistent per-prompt reminder that makes agents answer first, use plain language, and stay within a tight sentence budget unless more detail is requested.",
+    "displayName": "Brevity",
+    "shortDescription": "Short by default, responsive to requested depth.",
+    "longDescription": "Brevity adds a persistent per-prompt preference that keeps replies concise by default while honoring explicit requests for longer or structured answers.",
     "developerName": "Azuolas Balbieris",
     "category": "Productivity",
     "capabilities": [
       "Write"
     ],
     "defaultPrompt": [
-      "Use human-short mode.",
-      "Explain this in 1-3 sentences.",
-      "Keep replies practical and brief."
+      "Use Brevity auto mode.",
+      "Keep this concise unless I ask for more detail.",
+      "Make this a one-minute read."
     ],
     "brandColor": "#2563EB"
   }

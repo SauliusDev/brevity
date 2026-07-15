@@ -4,8 +4,8 @@ const fs = require("fs");
 const os = require("os");
 const path = require("path");
 
-const VALID_MODES = ["off", "lite", "hard", "explain", "coding"];
-const DEFAULT_MODE = "hard";
+const VALID_MODES = ["off", "auto", "hard"];
+const DEFAULT_MODE = "auto";
 const MAX_FLAG_BYTES = 64;
 
 function homeDir() {
@@ -13,11 +13,11 @@ function homeDir() {
 }
 
 function stateDir() {
-  return process.env.HUMAN_SHORT_STATE_DIR || path.join(homeDir(), ".human-short");
+  return process.env.BREVITY_STATE_DIR || path.join(homeDir(), ".brevity");
 }
 
 function configPath() {
-  return process.env.HUMAN_SHORT_CONFIG || path.join(stateDir(), "config.json");
+  return process.env.BREVITY_CONFIG || path.join(stateDir(), "config.json");
 }
 
 function flagPath(host) {
@@ -25,7 +25,7 @@ function flagPath(host) {
 }
 
 function logPath() {
-  return path.join(stateDir(), "logs", "human-short.jsonl");
+  return path.join(stateDir(), "logs", "brevity.jsonl");
 }
 
 function normalizeMode(mode) {
@@ -34,7 +34,7 @@ function normalizeMode(mode) {
 }
 
 function defaultMode() {
-  const envMode = normalizeMode(process.env.HUMAN_SHORT_MODE);
+  const envMode = normalizeMode(process.env.BREVITY_MODE);
   if (envMode) return envMode;
 
   try {

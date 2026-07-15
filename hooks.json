@@ -5,9 +5,9 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CODEX_PLUGIN_ROOT}/src/hooks/human-short-prompt.js\"",
+            "command": "node \"${CODEX_PLUGIN_ROOT}/src/hooks/brevity-prompt.js\"",
             "timeout": 5,
-            "statusMessage": "Applying human-short mode..."
+            "statusMessage": "Applying Brevity mode..."
           }
         ]
       }

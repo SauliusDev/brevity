@@ -5,7 +5,8 @@ const os = require("os");
 const path = require("path");
 const { appendLog } = require("./config");
 
-const MARKER = "human-short-managed";
+const MARKER = "brevity-managed";
+const LEGACY_MARKER = "human-short-managed";
 
 function readJson(filePath, fallback) {
   try {
@@ -19,7 +20,7 @@ function readJson(filePath, fallback) {
 function writeJson(filePath, value) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true, mode: 0o700 });
   if (fs.existsSync(filePath)) {
-    const backup = `${filePath}.human-short-backup-${Date.now()}`;
+    const backup = `${filePath}.brevity-backup-${Date.now()}`;
     fs.copyFileSync(filePath, backup);
     appendLog({ event: "install.backup", status: "ok", file: filePath, backup });
   }
@@ -31,8 +32,8 @@ function writeText(filePath, content) {
   if (fs.existsSync(filePath)) {
     const previous = fs.readFileSync(filePath, "utf8");
     if (previous === content) return false;
-    if (!previous.includes(MARKER)) return false;
-    const backup = `${filePath}.human-short-backup-${Date.now()}`;
+    if (!previous.includes(MARKER) && !previous.includes(LEGACY_MARKER)) return false;
+    const backup = `${filePath}.brevity-backup-${Date.now()}`;
     fs.copyFileSync(filePath, backup);
     appendLog({ event: "install.backup", status: "ok", file: filePath, backup });
   }
@@ -41,13 +42,13 @@ function writeText(filePath, content) {
 }
 
 function commandFor(root, script, host) {
-  return `HUMAN_SHORT_HOST=${host} node "${path.join(root, "src", "hooks", script)}" # ${MARKER}`;
+  return `BREVITY_HOST=${host} node "${path.join(root, "src", "hooks", script)}" # ${MARKER}`;
 }
 
 function claudeSlashCommand(root) {
-  const cli = path.join(root, "bin", "human-short.js");
+  const cli = path.join(root, "bin", "brevity.js");
   return `---
-description: Switch Human Short mode (hard/lite/explain/coding/off)
+description: Switch Brevity mode (auto/hard/off)
 allowed-tools: Bash(node:*)
 ---
 
@@ -64,17 +65,26 @@ function managedHook(command) {
     type: "command",
     command,
     timeout: 5,
-    statusMessage: "Applying human-short mode...",
+    statusMessage: "Applying Brevity mode...",
   };
+}
+
+function isManagedHook(hook) {
+  const command = String(hook.command || "");
+  return command.includes(MARKER) || command.includes(LEGACY_MARKER);
 }
 
 function appendHook(config, eventName, hook) {
   config.hooks ||= {};
   config.hooks[eventName] ||= [];
-  const alreadyInstalled = config.hooks[eventName].some(group =>
-    Array.isArray(group.hooks) && group.hooks.some(existing => String(existing.command || "").includes(MARKER))
-  );
-  if (alreadyInstalled) return false;
+  for (const group of config.hooks[eventName]) {
+    if (!Array.isArray(group.hooks)) continue;
+    const index = group.hooks.findIndex(isManagedHook);
+    if (index === -1) continue;
+    if (JSON.stringify(group.hooks[index]) === JSON.stringify(hook)) return false;
+    group.hooks[index] = hook;
+    return true;
+  }
   config.hooks[eventName].push({ hooks: [hook] });
   return true;
 }
@@ -87,7 +97,7 @@ function removeManagedHooks(config) {
     if (!Array.isArray(groups)) continue;
     const nextGroups = groups
       .map(group => {
-        const hooks = Array.isArray(group.hooks) ? group.hooks.filter(hook => !String(hook.command || "").includes(MARKER)) : [];
+        const hooks = Array.isArray(group.hooks) ? group.hooks.filter(hook => !isManagedHook(hook)) : [];
         if (hooks.length !== (group.hooks || []).length) changed = true;
         return { ...group, hooks };
       })
@@ -101,13 +111,16 @@ function removeManagedHooks(config) {
 
 function installClaude(root, claudeDir = path.join(os.homedir(), ".claude")) {
   const settingsPath = path.join(claudeDir, "settings.json");
-  const commandPath = path.join(claudeDir, "commands", "human-short.md");
+  const commandPath = path.join(claudeDir, "commands", "brevity.md");
   const settings = readJson(settingsPath, {});
   const startChanged = appendHook(settings, "SessionStart", {
-    ...managedHook(commandFor(root, "human-short-activate.js", "claude")),
-    statusMessage: "Loading human-short mode...",
+    ...managedHook(commandFor(root, "brevity-activate.js", "claude")),
+    statusMessage: "Loading Brevity mode...",
   });
-  const promptChanged = appendHook(settings, "UserPromptSubmit", managedHook(commandFor(root, "human-short-prompt.js", "claude")));
+  const promptChanged = appendHook(settings, "UserPromptSubmit", {
+    ...managedHook(commandFor(root, "brevity-prompt.js", "claude")),
+    statusMessage: "Applying Brevity mode...",
+  });
   const commandChanged = writeText(commandPath, claudeSlashCommand(root));
   if (startChanged || promptChanged) writeJson(settingsPath, settings);
   appendLog({ event: "install.claude", status: "ok", changed: startChanged || promptChanged || commandChanged, file: settingsPath, commandFile: commandPath });
@@ -117,7 +130,7 @@ function installClaude(root, claudeDir = path.join(os.homedir(), ".claude")) {
 function installCodex(root, codexDir = path.join(os.homedir(), ".codex")) {
   const hooksPath = path.join(codexDir, "hooks.json");
   const config = readJson(hooksPath, { hooks: {} });
-  const changed = appendHook(config, "UserPromptSubmit", managedHook(commandFor(root, "human-short-prompt.js", "codex")));
+  const changed = appendHook(config, "UserPromptSubmit", managedHook(commandFor(root, "brevity-prompt.js", "codex")));
   if (changed) writeJson(hooksPath, config);
   appendLog({ event: "install.codex", status: "ok", changed, file: hooksPath });
   return { file: hooksPath, changed, needsTrust: !hasCodexTrustState(hooksPath) };
@@ -125,7 +138,7 @@ function installCodex(root, codexDir = path.join(os.homedir(), ".codex")) {
 
 function uninstallClaude(claudeDir = path.join(os.homedir(), ".claude")) {
   const settingsPath = path.join(claudeDir, "settings.json");
-  const commandPath = path.join(claudeDir, "commands", "human-short.md");
+  const commandPath = path.join(claudeDir, "commands", "brevity.md");
   const settings = readJson(settingsPath, {});
   const hooksChanged = removeManagedHooks(settings);
   let commandChanged = false;

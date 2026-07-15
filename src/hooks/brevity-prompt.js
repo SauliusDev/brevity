@@ -5,7 +5,7 @@ const { activeMode, appendLog, defaultMode, removeFlag, writeFlag } = require(".
 const { commandMode, readHookInput } = require("../lib/prompt");
 const { reminder } = require("../lib/rules");
 
-const host = process.env.HUMAN_SHORT_HOST || (process.env.CLAUDE_CONFIG_DIR ? "claude" : "codex");
+const host = process.env.BREVITY_HOST || (process.env.CLAUDE_CONFIG_DIR ? "claude" : "codex");
 
 let input = "";
 process.stdin.on("data", chunk => {

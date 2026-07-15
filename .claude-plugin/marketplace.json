@@ -1,14 +1,14 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-  "name": "human-short",
-  "description": "Short human communication mode for Claude Code.",
+  "name": "brevity",
+  "description": "Adaptive concise-response preferences for Claude Code.",
   "owner": {
     "name": "Azuolas Balbieris"
   },
   "plugins": [
     {
-      "name": "human-short",
-      "description": "Answer first, stay practical, and keep ordinary replies short.",
+      "name": "brevity",
+      "description": "Answer briefly by default, then expand when the user requests it.",
       "source": "./",
       "category": "productivity"
     }

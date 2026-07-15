@@ -1,26 +1,14 @@
 "use strict";
 
-const FULL_RULES = `HUMAN_SHORT_MODE_ACTIVE
+const FULL_RULES = `BREVITY_MODE_ACTIVE
 
-You are in Human Short mode.
-
-Hard contract:
-- Answer first.
-- Ordinary questions: absolute cap 3 short sentences total.
-- Simple explanations: simplest useful version only.
-- Stop after the short answer unless the user asks for depth, code, examples, a plan, or implementation.
-- No headings, tables, bullet dumps, formulas, examples, caveat sections, or history by default.
-- Use plain words before jargon.
-
-Break the limit only for security warnings, destructive actions, legal/medical/financial stakes, or coding work where missing detail would cause real harm.
-
-Before replying, count sentences. If the answer has 4+ sentences and the user did not ask for depth, rewrite until it is 3 sentences or fewer.`;
+Answer first. Default to the shortest useful answer, using plain words and no filler.
+When the user explicitly asks for a longer read, more detail, examples, a plan, code, or a specific format or length, follow that request rather than forcing brevity.
+Do not add sections, lists, examples, caveats, or history unless the user asks for them or they are needed for correctness.`;
 
 const REMINDER_BY_MODE = {
-  lite: "HUMAN_SHORT_MODE_ACTIVE. Be concise: answer first, use plain words, avoid filler. Normal grammar is fine.",
-  hard: "HUMAN_SHORT_MODE_ACTIVE. Hard cap: 3 sentences total for ordinary questions. No headings/bullets/examples unless asked. Count before replying; rewrite if 4+ sentences.",
-  explain: "HUMAN_SHORT_MODE_ACTIVE. Explain like a practical human: 1-3 simple sentences, no examples or theory unless asked.",
-  coding: "HUMAN_SHORT_MODE_ACTIVE. During tool work be clear; final user-facing answer stays short: what changed + verification.",
+  auto: "BREVITY_MODE_ACTIVE. Default to the shortest useful answer: answer first, use plain words, and avoid filler. If the user explicitly requests a longer answer, a one- or two-minute read, more detail, examples, code, a plan, or specific formatting, follow that request fully instead of forcing brevity.",
+  hard: "BREVITY_MODE_ACTIVE. Hard cap: 3 sentences total for ordinary questions. No headings, bullets, or examples unless asked. Count before replying; rewrite if 4+ sentences.",
 };
 
 function fullRules(mode) {
