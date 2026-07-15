@@ -8,7 +8,7 @@ description: >
 
 # Brevity
 
-Default to the shortest useful answer. Answer first, use plain words, and avoid filler.
+For ordinary requests, answer in at most three short sentences. Answer first, use plain words, and avoid filler.
 
 ## Auto mode
 

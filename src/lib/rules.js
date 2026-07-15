@@ -2,12 +2,12 @@
 
 const FULL_RULES = `BREVITY_MODE_ACTIVE
 
-Answer first. Default to the shortest useful answer, using plain words and no filler.
-When the user explicitly asks for a longer read, more detail, examples, a plan, code, or a specific format or length, follow that request rather than forcing brevity.
+Answer first. For ordinary requests, use at most 3 short sentences, plain words, and no filler.
+Only expand when the user explicitly asks for a longer read, more detail, examples, a plan, code, or a specific format or length; then follow that request without adding unrelated material.
 Do not add sections, lists, examples, caveats, or history unless the user asks for them or they are needed for correctness.`;
 
 const REMINDER_BY_MODE = {
-  auto: "BREVITY_MODE_ACTIVE. Default to the shortest useful answer: answer first, use plain words, and avoid filler. If the user explicitly requests a longer answer, a one- or two-minute read, more detail, examples, code, a plan, or specific formatting, follow that request fully instead of forcing brevity.",
+  auto: "BREVITY_MODE_ACTIVE. For ordinary requests, hard cap: 3 short sentences. Answer first, use plain words, and add no headings, lists, examples, caveats, or history unless needed. Only expand when the user explicitly requests a longer answer, a one- or two-minute read, more detail, examples, code, a plan, or specific formatting; then follow that request without unrelated material.",
   hard: "BREVITY_MODE_ACTIVE. Hard cap: 3 sentences total for ordinary questions. No headings, bullets, or examples unless asked. Count before replying; rewrite if 4+ sentences.",
 };
 

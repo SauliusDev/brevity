@@ -4,7 +4,7 @@ Brevity is a prompt-hook preference for Claude Code, Codex, and Hermes: answer w
 
 ## Modes
 
-- `auto` (default): concise, plain answers by default; obey requests such as "one-minute read", "give examples", "make a plan", or a required format.
+- `auto` (default): a three-sentence cap for ordinary requests; obey explicit requests such as "one-minute read", "give examples", "make a plan", or a required format.
 - `hard`: strict three-sentence cap for ordinary questions.
 - `off`: no Brevity injection.
 
